@@ -41,11 +41,12 @@ headers = {
     'accept-language': 'ko,en-US;q=0.9,en;q=0.8',
     'cookie': 'NNB=DDX3AC4DCYCF6; NRTK=ag#all_gr#1_ma#-2_si#0_en#0_sp#0; nx_ssl=2; ASID=79b32aaf000001733726fc7000000061; MM_NEW=1; NFS=2; MM_NOW_COACH=1; _fbp=fb.1.1595227419852.1738571819; _ga_4BKHBFKFK0=GS1.1.1595227419.1.1.1595227465.14; _ga=GA1.1.1468214155.1595227420; _ga_7VKFYR6RV1=GS1.1.1596174655.1.1.1596174671.44; page_uid=UyqD5wp0J1ZssgSb5D8ssssssHC-202676; csrf_token=ddd6a88c-b8c6-42ec-b82f-ac5aa5ae3ec7',
 }
+final_review_data =[]
 for code in final_movie_data:
-    review_code = code['movie_code']
+    movie_code = code['movie_code']
 
     params = (
-        ('code', review_code),
+        ('code', movie_code),
         ('type', 'after'),
         ('isActualPointWriteExecute', 'false'),
         ('isMileageSubscriptionAlready', 'false'),
@@ -59,7 +60,19 @@ for code in final_movie_data:
         'body > div > div > div.score_result > ul > li'
     )
     # print(len(review_data))
-    print(review_data)
+    final_review_data.append(review_data)
+# print(final_review_data)
+    star_review = []
+    for review in review_data:
+        review_tag = review.select_one('div[class=score_reple] > p > span[id=_filtered_ment_0]')
+        star_tag = review.select_one('div[class=star_score] > em')
+        reviews = review_tag.text
+        stars = star_tag.text
+        star_review.append(reviews.strip())
+        star_review.append(stars.strip())
+        break
+    print(star_review)
+
 
 
 # 아래와 같은 방식을 하면 정보를 불러드릴 수 없습니다.
